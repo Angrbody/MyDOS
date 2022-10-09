@@ -9,6 +9,7 @@ int main(){
     charactor Evan(3, 4, 500, 1, "Evan");
     charactor Saber(4, 4, 450, 1, "Saber");
 
+    charactor zhubaba(5, 6, 100000, 1, "zhubaba");
     Phein.showMessage();
     Ross.showMessage();
 
@@ -18,6 +19,14 @@ int main(){
     Phein.addFriend(RedPrince);
     Phein.addFriend(Evan);
     Phein.addFriend(Saber);
+    
+    Phein.showMessage();
+    Phein.showTeam();
+
+    Ross.addFriend(Phein);
+    Ross.showTeam();
+    
+    system("pause");
     return 0;
 
 }
