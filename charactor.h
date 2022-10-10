@@ -53,6 +53,7 @@ private:
     int ap;  //行动点数
     int hp;  //生命
     int exp; //经验
+    enum blood{human, elf, skull, dwarf};   //种族
     vector<int> expPool; //经验池，存放各个等级的最大经验值
     int level;   //等级
     vector<skill> myskill;  //技能列表，动态增加的
@@ -60,6 +61,9 @@ private:
     vector<task> mytask;    //任务列表
     vector<int> isfriend;   //敌对关系列表，负数代表敌对，100以上代表队友
     vector<vector<materiel>> mymateriel;   //装备（包含武器）
+    //属性
+    int armour; //护甲值
+
 };
 
 //show basic message
