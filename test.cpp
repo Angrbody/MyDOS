@@ -3,6 +3,7 @@
 #include"charactor.h"
 
 int main(){
+    //主角团初始化
     charactor Phein(0, 4, 500, 1, "Phein");
     charactor Ross(1, 4, 400, 1, "Ross");
     charactor RedPrince(2, 4, 600, 1, "RedPrince");
@@ -13,19 +14,23 @@ int main(){
     Phein.showMessage();
     Ross.showMessage();
 
-    Phein.islevelUp();
+    Phein.islevelUp();  //尝试升级->因经验不足失败
 
+    //队友测试（beta）
     Phein.addFriend(Ross);
     Phein.addFriend(RedPrince);
     Phein.addFriend(Evan);
-    Phein.addFriend(Saber);
+    Phein.addFriend(Saber); //队伍已满，无法加入saber
     
     Phein.showMessage();
-    Phein.showTeam();
+    Phein.showTeam();   //四人小队
 
-    Ross.addFriend(Phein);
-    Ross.showTeam();
+    Ross.addFriend(Phein);  //双向建立friend
+    Ross.showTeam();    //Ross的两人小队（这个逻辑有问题，需要再想想）
     
+    //开发battle系统(暂时先弄1v1)
+    charactor expBabyA(6, 4, 400, 1, "expBabyA");
+    Phein.setBattle(expBabyA);
     system("pause");
     return 0;
 

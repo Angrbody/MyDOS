@@ -25,10 +25,11 @@ public:
     //由id获得charator类
     charactor& getCharactor(){return *this;}
     
-    //获得id,ap,hp
+    //获得id,ap,hp,name
     int getID() const {return id;}
     int getAp() const {return ap;}
     int getHp() const {return hp;}
+    string getName() const {return name;}
 
     //show message
     void showMessage();
@@ -41,7 +42,9 @@ public:
 
     //show your team
     void showTeam();
-        
+
+    //1v1 battle
+    void setBattle(charactor R);    
     
 private:
     const int levelMax = 18;    //最大等级固定18
@@ -109,4 +112,32 @@ void charactor::showTeam(){
     cout<<"              "<<"]"<<endl<<endl;
 }
 
+//1v1Battle system
+void charactor::setBattle(charactor R){
+    cout<<"the battle between "<<this->getName()<<" and"<<R.name<<" is going on!"<<endl;
+    this->showMessage();
+    R.showMessage();
+    int myHp = this->getHp();
+    int hisHp = R.hp;
+    while(myHp > 0 && hisHp > 0){
+        int myAct = 0;
+        //1.这里后续应该比较先攻，先以myact优先，也先不考虑ap了，后续再实现
+        //2.这里应该是展示你所拥有的技能组以及每个技能对应的操作数和效果
+        cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
+        cin>>myAct;
+        if(myAct == 1){hisHp -= 200;}   //随便设置一个攻击力
+        else if(myAct == 3){myHp += 50;}    //随便设置一个回复
+
+        //敌方操作
+        myHp -= 100;    //随便设置一下
+
+        cout<<"My hp now: "<<myHp<<endl<<"enemy's hp now: "<<hisHp<<endl;
+    }
+    if(myHp <= 0){cout<<"you lose the game !"<<endl;}
+    if(hisHp <= 0){
+        cout<<"winner is you !"<<endl;
+        this->exp += 100;   //随便设置一个值作为获胜的奖励
+        this->islevelUp();
+    }
+}
 #endif
