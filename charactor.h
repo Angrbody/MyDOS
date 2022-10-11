@@ -44,7 +44,10 @@ public:
     void showTeam();
 
     //1v1 battle
-    void setBattle(charactor R);    
+    void setBattle(charactor R);
+
+    //battle act
+    void battleAct(charactor R);    
     
 private:
     const int levelMax = 18;    //最大等级固定18
@@ -61,9 +64,10 @@ private:
     vector<task> mytask;    //任务列表
     vector<int> isfriend;   //敌对关系列表，负数代表敌对，100以上代表队友
     vector<vector<materiel>> mymateriel;   //装备（包含武器）
-    //属性
-    int armour; //护甲值
-
+    //初始属性
+    int armor = 0; //护甲值
+    int wisdom = 10; //智慧
+    int strength = 10; //力量
 };
 
 //show basic message
@@ -74,6 +78,7 @@ void charactor::showMessage(){
     cout<<"hp: "<<hp<<endl;
     cout<<"exp: "<<exp<<endl<<endl;
 }
+
 //人物升级操作
 void charactor::islevelUp (){
         // level = level >= levelMax ? level : level+1;
@@ -82,7 +87,7 @@ void charactor::islevelUp (){
             cout<<name<<" levelup! "<<endl;
             exp -= expPool[level];
             level++;
-            //其他维度增长,暂时随便设置一下
+            //其他维度增长,暂时随便设置一下（后续应该修改为可选择加两点）
             hp += 100;
         }
         else{
@@ -121,20 +126,80 @@ void charactor::setBattle(charactor R){
     cout<<"the battle between "<<this->getName()<<" and"<<R.name<<" is going on!"<<endl;
     this->showMessage();
     R.showMessage();
+    //这里后续搞一个vector
     int myHp = this->getHp();
     int hisHp = R.hp;
+    int myArmor = this->armor;
+    int hisArmor = R.armor;
+    int myWisdom = this->wisdom;
+    int hisWisdom = R.wisdom;
     while(myHp > 0 && hisHp > 0){
-        int myAct = 0;
-        //1.这里后续应该比较先攻，先以myact优先，也先不考虑ap了，后续再实现
-        //2.这里应该是展示你所拥有的技能组以及每个技能对应的操作数和效果
-        cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
-        cin>>myAct;
-        if(myAct == 1){hisHp -= 200;}   //随便设置一个攻击力
-        else if(myAct == 3){myHp += 50;}    //随便设置一个回复
+        int myAct = 0;  //待输入的动作指令
+        //按照智慧决定先攻（考虑一下要不要把具体的battleact封装起来）
+        //可能应该弄一个battle vector，把所有加入战斗的人放进来，暂时先弄1v1吧
+        if(this->wisdom >= R.wisdom){
+            //这里应该是展示你所拥有的技能组以及每个技能对应的操作数和效果，后续加入ap操作
+            cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
+            cin>>myAct;
+            if(myAct == 1){
+                int this_attack = this->strength*10;
+                if(this_attack > hisArmor > 0){
+                    this_attack -= hisArmor;
+                    hisArmor = 0;
+                }
+                else if(this_attack <= hisArmor){
+                    this_attack = 0;
+                    hisArmor -= this_attack;
+                }
+                hisHp -= this_attack;
+            }   //力量决定的thisAttack
+            else if(myAct == 2){
+                myArmor += 50;  //固定的加盾
+            }    
+            else if(myAct == 3){
+                int this_heal = myWisdom*3; //智慧决定的回复
+                if(myHp + this_heal <= this->hp){
+                    myHp += this_heal;
+                }
+                else{
+                    myHp = this->hp;
+                }
+            }
 
-        //敌方操作
-        myHp -= 100;    //随便设置一下
-
+            //敌方操作（需要修改）
+            myHp -= 100;    //随便设置一下
+        }
+        else{
+            //敌方操作
+            myHp -= 100;    //随便设置一下
+            cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
+            cin>>myAct;
+            if(myAct == 1){
+                int this_attack = this->strength*10;
+                if(this_attack > hisArmor > 0){
+                    this_attack -= hisArmor;
+                    hisArmor = 0;
+                }
+                else if(this_attack <= hisArmor){
+                    this_attack = 0;
+                    hisArmor -= this_attack;
+                }
+                hisHp -= this_attack;
+            }   //力量决定的thisAttack
+            else if(myAct == 2){
+                myArmor += 50;  //固定的加盾
+            }    
+            else if(myAct == 3){
+                int this_heal = myWisdom*3; //智慧决定的回复
+                if(myHp + this_heal <= this->hp){
+                    myHp += this_heal;
+                }
+                else{
+                    myHp = this->hp;
+                }
+            }
+        }
+        
         cout<<"My hp now: "<<myHp<<endl<<"enemy's hp now: "<<hisHp<<endl;
     }
     if(myHp <= 0){cout<<"you lose the game !"<<endl;}
@@ -143,5 +208,11 @@ void charactor::setBattle(charactor R){
         this->exp += 100;   //随便设置一个值作为获胜的奖励
         this->islevelUp();
     }
+
+}
+
+//封装每个角色的单次操作
+void charactor::battleAct(charactor R){
+    
 }
 #endif
