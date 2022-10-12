@@ -140,6 +140,7 @@ void charactor::setBattle(charactor R){
         //可能应该弄一个battle vector，把所有加入战斗的人放进来，暂时先弄1v1吧
         if(this->wisdom >= R.wisdom){
             this->battleAct(R);
+            
             //敌方操作（需要修改）
             R.battleAct(*this);
         }
