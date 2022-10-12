@@ -48,6 +48,9 @@ public:
 
     //battle act
     void battleAct(charactor R);    
+
+    //get battle message
+    vector<int> getBattleMessage() const;
     
 private:
     const int levelMax = 18;    //最大等级固定18
@@ -134,73 +137,18 @@ void charactor::setBattle(charactor R){
     int myWisdom = this->wisdom;
     int hisWisdom = R.wisdom;
     while(myHp > 0 && hisHp > 0){
-        int myAct = 0;  //待输入的动作指令
-        //按照智慧决定先攻（考虑一下要不要把具体的battleact封装起来）
         //可能应该弄一个battle vector，把所有加入战斗的人放进来，暂时先弄1v1吧
         if(this->wisdom >= R.wisdom){
-            //这里应该是展示你所拥有的技能组以及每个技能对应的操作数和效果，后续加入ap操作
-            cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
-            cin>>myAct;
-            if(myAct == 1){
-                int this_attack = this->strength*10;
-                if(this_attack > hisArmor > 0){
-                    this_attack -= hisArmor;
-                    hisArmor = 0;
-                }
-                else if(this_attack <= hisArmor){
-                    this_attack = 0;
-                    hisArmor -= this_attack;
-                }
-                hisHp -= this_attack;
-            }   //力量决定的thisAttack
-            else if(myAct == 2){
-                myArmor += 50;  //固定的加盾
-            }    
-            else if(myAct == 3){
-                int this_heal = myWisdom*3; //智慧决定的回复
-                if(myHp + this_heal <= this->hp){
-                    myHp += this_heal;
-                }
-                else{
-                    myHp = this->hp;
-                }
-            }
-
+            this->battleAct(R);
             //敌方操作（需要修改）
-            myHp -= 100;    //随便设置一下
+            R.battleAct(*this);
         }
         else{
             //敌方操作
-            myHp -= 100;    //随便设置一下
-            cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
-            cin>>myAct;
-            if(myAct == 1){
-                int this_attack = this->strength*10;
-                if(this_attack > hisArmor > 0){
-                    this_attack -= hisArmor;
-                    hisArmor = 0;
-                }
-                else if(this_attack <= hisArmor){
-                    this_attack = 0;
-                    hisArmor -= this_attack;
-                }
-                hisHp -= this_attack;
-            }   //力量决定的thisAttack
-            else if(myAct == 2){
-                myArmor += 50;  //固定的加盾
-            }    
-            else if(myAct == 3){
-                int this_heal = myWisdom*3; //智慧决定的回复
-                if(myHp + this_heal <= this->hp){
-                    myHp += this_heal;
-                }
-                else{
-                    myHp = this->hp;
-                }
-            }
+            R.battleAct(*this);
+            //我方操作
+            this->battleAct(R);
         }
-        
-        cout<<"My hp now: "<<myHp<<endl<<"enemy's hp now: "<<hisHp<<endl;
     }
     if(myHp <= 0){cout<<"you lose the game !"<<endl;}
     if(hisHp <= 0){
@@ -211,8 +159,51 @@ void charactor::setBattle(charactor R){
 
 }
 
+//获得battle需要的基本信息
+std::vector<int> charactor::getBattleMessage() const{
+    vector<int> res;
+    res.push_back(hp);
+    res.push_back(ap);
+    res.push_back(armor);
+    res.push_back(wisdom);
+    res.push_back(strength);
+    //后续再补充
+    return res;
+}
 //封装每个角色的单次操作
 void charactor::battleAct(charactor R){
-    
+    vector<int> mConfig = this->getBattleMessage(); //0.hp 1.ap 2.armor 3.wisdom 4.strength
+    vector<int> rConfig = R.getBattleMessage();//0.hp 1.ap 2.armor 3.wisdom 4.strength
+    int myAct;
+    cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
+    cin>>myAct;
+    if(myAct == 1){
+        cout<<this->name<<" is attacking !"<<endl;
+        int this_attack = mConfig[4]*10;
+            if(this_attack > rConfig[2] > 0){
+                this_attack -= rConfig[2];
+                rConfig[2] = 0;
+            }
+            else if(this_attack <= rConfig[2]){
+                this_attack = 0;
+                rConfig[2] -= this_attack;
+            }
+            rConfig[0] -= this_attack;
+            }   //力量决定的thisAttack
+    else if(myAct == 2){
+        cout<<this->name<<" is intensing his sheild !"<<endl;
+        mConfig[2] += 50;  //固定的加盾
+    }    
+    else if(myAct == 3){
+        cout<<this->name<<" is trying to heal hisself !"<<endl;
+        int this_heal = mConfig[3]*3; //智慧决定的回复
+        if(mConfig[0] + this_heal <= this->hp){
+            mConfig[0] += this_heal;
+        }
+        else{
+            mConfig[0] = this->hp;
+        }
+    }
+    cout<<this->name<<" hp now: "<<mConfig[0]<<endl<<R.name<<" hp now: "<<rConfig[0]<<endl;
 }
 #endif
