@@ -31,6 +31,15 @@ public:
     int getHp() const {return hp;}
     string getName() const {return name;}
 
+    //update message
+    void updateMessage(vector<int> newMessage) {//0.hp 1.ap 2.armor 3.wisdom 4.strength
+        hp = newMessage[0];
+        ap = newMessage[1];
+        armor = newMessage[2];
+        wisdom = newMessage[3];
+        strength = newMessage[4];
+    }
+
     //show message
     void showMessage();
 
@@ -47,7 +56,7 @@ public:
     void setBattle(charactor R);
 
     //battle act
-    void battleAct(charactor R);    
+    vector<vector<int>> battleAct(charactor R);    
 
     //get battle message
     vector<int> getBattleMessage() const;
@@ -126,33 +135,39 @@ void charactor::showTeam(){
 
 //1v1Battle system
 void charactor::setBattle(charactor R){
-    cout<<"the battle between "<<this->getName()<<" and"<<R.name<<" is going on!"<<endl;
+    cout<<"the battle between "<<this->getName()<<" and "<<R.name<<" is going on!"<<endl;
     this->showMessage();
     R.showMessage();
-    //这里后续搞一个vector
-    int myHp = this->getHp();
-    int hisHp = R.hp;
-    int myArmor = this->armor;
-    int hisArmor = R.armor;
-    int myWisdom = this->wisdom;
-    int hisWisdom = R.wisdom;
-    while(myHp > 0 && hisHp > 0){
+    // int &myHp = this->hp;
+    // int &hisHp = R.hp;
+    while(this->hp > 0 && R.hp > 0){
         //可能应该弄一个battle vector，把所有加入战斗的人放进来，暂时先弄1v1吧
         if(this->wisdom >= R.wisdom){
-            this->battleAct(R);
-            
+            vector<vector<int>> myact = this->battleAct(R);
+            this->updateMessage(myact[0]);
+            R.updateMessage(myact[1]);
+            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
             //敌方操作（需要修改）
-            R.battleAct(*this);
+            vector<vector<int>> hisact = R.battleAct(*this);
+            R.updateMessage(hisact[0]);
+            this->updateMessage(hisact[1]);
+            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
         }
         else{
             //敌方操作
-            R.battleAct(*this);
+            vector<vector<int>> hisact = R.battleAct(*this);
+            R.updateMessage(hisact[0]);
+            this->updateMessage(hisact[1]);
+            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
             //我方操作
-            this->battleAct(R);
+            vector<vector<int>> myact = this->battleAct(R);
+            this->updateMessage(myact[0]);
+            R.updateMessage(myact[1]);
+            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
         }
     }
-    if(myHp <= 0){cout<<"you lose the game !"<<endl;}
-    if(hisHp <= 0){
+    if(this->hp <= 0){cout<<"you lose the game !"<<endl;}
+    if(R.hp <= 0){
         cout<<"winner is you !"<<endl;
         this->exp += 100;   //随便设置一个值作为获胜的奖励
         this->islevelUp();
@@ -171,13 +186,16 @@ std::vector<int> charactor::getBattleMessage() const{
     //后续再补充
     return res;
 }
+
 //封装每个角色的单次操作
-void charactor::battleAct(charactor R){
+vector<vector<int>> charactor::battleAct(charactor R){
     vector<int> mConfig = this->getBattleMessage(); //0.hp 1.ap 2.armor 3.wisdom 4.strength
     vector<int> rConfig = R.getBattleMessage();//0.hp 1.ap 2.armor 3.wisdom 4.strength
+    vector<vector<int>> res;
     int myAct;
     cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
     cin>>myAct;
+    //attack
     if(myAct == 1){
         cout<<this->name<<" is attacking !"<<endl;
         int this_attack = mConfig[4]*10;
@@ -191,10 +209,14 @@ void charactor::battleAct(charactor R){
             }
             rConfig[0] -= this_attack;
             }   //力量决定的thisAttack
+
+    //defense
     else if(myAct == 2){
         cout<<this->name<<" is intensing his sheild !"<<endl;
         mConfig[2] += 50;  //固定的加盾
-    }    
+    }
+
+    //heal
     else if(myAct == 3){
         cout<<this->name<<" is trying to heal hisself !"<<endl;
         int this_heal = mConfig[3]*3; //智慧决定的回复
@@ -205,6 +227,8 @@ void charactor::battleAct(charactor R){
             mConfig[0] = this->hp;
         }
     }
-    cout<<this->name<<" hp now: "<<mConfig[0]<<endl<<R.name<<" hp now: "<<rConfig[0]<<endl;
+    res.emplace_back(mConfig);
+    res.emplace_back(rConfig);
+    return res;
 }
 #endif
