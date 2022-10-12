@@ -143,7 +143,7 @@ void charactor::setBattle(charactor R){
     while(this->hp > 0 && R.hp > 0){
         //可能应该弄一个battle vector，把所有加入战斗的人放进来，暂时先弄1v1吧
         if(this->wisdom >= R.wisdom){
-            vector<vector<int>> myact = this->battleAct(R);
+            vector<vector<int>> myact = this->battleAct(R); //这里其实重复操作了，不知道能不能修改，晚上测试一下
             this->updateMessage(myact[0]);
             R.updateMessage(myact[1]);
             cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
