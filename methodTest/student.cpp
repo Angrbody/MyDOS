@@ -5,8 +5,15 @@ void student::update(int newScore){
 }
 
 void student::kaoshi(){
-    int mm = 100;
+    int mm = 60;
     cout<<"score before kaoshi"<<this->score<<endl;
     this->update(mm);
-    cout<<"score after kaoshi"<<this->score<<endl;
+    cout<<"the normal score: "<<this->score<<endl;
+    this->zuobi();
+    cout<<"zuobihou score: "<<this->score<<endl;
+}
+
+void student::zuobi(){
+    this->update(100);
+    cout<<"zuobifenshu : "<<this->score<<endl;
 }
