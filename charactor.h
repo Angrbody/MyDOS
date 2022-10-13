@@ -46,7 +46,7 @@ public:
     //1v1 battle
     void setBattle(charactor& R);
 
-    //battle act
+    //battle act 2.0
     void battleAct(charactor& R);    
 
     //get battle message

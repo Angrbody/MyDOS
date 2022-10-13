@@ -31,6 +31,8 @@ int main(){
     //开发battle系统(暂时先弄1v1)
     charactor expBabyA(6, 4, 400, 1, "expBabyA");
     Phein.setBattle(expBabyA);
+
+    Phein.showMessage();
     system("pause");
     return 0;
 

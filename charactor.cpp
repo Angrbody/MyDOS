@@ -19,6 +19,8 @@ void charactor::islevelUp (){
             cout<<name<<" levelup! "<<endl;
             exp -= expPool[level];
             level++;
+            cout<<this->name<<" is [ level "<<this->level<<" ] now "<<endl;
+            cout<<"the next level need "<<this->expPool[this->level]<<" exp to reach "<<endl;
             //其他维度增长,暂时随便设置一下（后续应该修改为可选择加两点）
             hp += 100;
         }
@@ -55,9 +57,12 @@ void charactor::showTeam(){
 
 //1v1Battle system
 void charactor::setBattle(charactor& R){
+    cout<<"---------------------BATTLE START !-----------------------"<<endl<<endl;
     cout<<"the battle between "<<this->getName()<<" and "<<R.name<<" is going on!"<<endl<<endl;
     this->showMessage();
     R.showMessage();
+    vector<int> mConfig = this->getBattleMessage(); //0.hp 1.ap 2.armor 3.wisdom 4.strength
+    vector<int> rConfig = R.getBattleMessage();//0.hp 1.ap 2.armor 3.wisdom 4.strength
     while(this->hp > 0 && R.hp > 0){
         if(this->wisdom >= R.wisdom){
             this->battleAct(R); 
@@ -73,12 +78,17 @@ void charactor::setBattle(charactor& R){
         cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
     }
 
-    if(this->hp <= 0){cout<<"you lose the game !"<<endl;}
+    if(this->hp <= 0){
+        cout<<"you lose the game !"<<endl;
+        R.updateMessage(rConfig);
+    }
     if(R.hp <= 0){
         cout<<"winner is you !"<<endl;
+        this->updateMessage(mConfig);   //状态恢复到战斗之前
         this->exp += 100;   //随便设置一个值作为获胜的奖励
         this->islevelUp();
     }
+    cout<<endl<<"----------------------BATTLE END !------------------------"<<endl;
 
 }
 

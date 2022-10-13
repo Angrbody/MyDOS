@@ -1,3 +1,4 @@
+//battleact 1.0，bug未修复时
 #ifndef __CHARACTOR__
 #define __CHARACTOR__
 #include<iostream>
