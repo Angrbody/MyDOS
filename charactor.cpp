@@ -28,7 +28,7 @@ void charactor::islevelUp (){
     }
 
 //添加队友(单向,考虑修改)
-void charactor::addFriend (charactor R){
+void charactor::addFriend (charactor& R){
     cout<<"you are inviting "<<R.name<<" into your team!"<<endl;
     int num = myfriend.size();
     if(num < 3){
@@ -54,34 +54,25 @@ void charactor::showTeam(){
 }
 
 //1v1Battle system
-void charactor::setBattle(charactor R){
-    cout<<"the battle between "<<this->getName()<<" and "<<R.name<<" is going on!"<<endl;
+void charactor::setBattle(charactor& R){
+    cout<<"the battle between "<<this->getName()<<" and "<<R.name<<" is going on!"<<endl<<endl;
     this->showMessage();
     R.showMessage();
-    // int &myHp = this->hp;
-    // int &hisHp = R.hp;
     while(this->hp > 0 && R.hp > 0){
-        //可能应该弄一个battle vector，把所有加入战斗的人放进来，暂时先弄1v1吧
         if(this->wisdom >= R.wisdom){
-            this->battleAct(R); //这里其实重复操作了，不知道能不能修改，晚上测试一下(测试结果是可以深层调用的)
+            this->battleAct(R); 
             if(this->hp <= 0 || R.hp <= 0)  break;
-            cout<<R.hp<<endl;
-            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
-            
-            //敌方操作（需要修改）
             R.battleAct(*this);
-            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
+            
         }
         else{
-            //敌方操作
             R.battleAct(*this);
             if(this->hp <= 0 || R.hp <= 0)  break;
-            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
-
             this->battleAct(R);
-            cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
         }
+        cout<<this->name<<" hp now: "<<this->hp<<endl<<R.name<<" hp now: "<<R.hp<<endl;
     }
+
     if(this->hp <= 0){cout<<"you lose the game !"<<endl;}
     if(R.hp <= 0){
         cout<<"winner is you !"<<endl;
@@ -104,10 +95,11 @@ std::vector<int> charactor::getBattleMessage() {
 }
 
 //封装每个角色的单次操作
-void charactor::battleAct(charactor R){
+void charactor::battleAct(charactor& R){
     vector<int> mConfig = this->getBattleMessage(); //0.hp 1.ap 2.armor 3.wisdom 4.strength
     vector<int> rConfig = R.getBattleMessage();//0.hp 1.ap 2.armor 3.wisdom 4.strength
     int myAct;
+    cout<<this->name<<" 's turn :"<<endl;
     cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
     cin>>myAct;
     //attack
@@ -123,6 +115,7 @@ void charactor::battleAct(charactor R){
                 rConfig[2] -= this_attack;
             }
             rConfig[0] -= this_attack;
+            cout<<R.name<<" lost "<<this_attack<<" hp from "<<this->name<<"'s attack !"<<endl;
             }   //力量决定的thisAttack
 
     //defense
@@ -142,13 +135,16 @@ void charactor::battleAct(charactor R){
             mConfig[0] = this->hp;
         }
     }
+    (*this).hp = mConfig[0];
+    cout<<this->name<<"'s hp after act = "<<(*this).hp<<endl;
+
+    R.hp = rConfig[0];
+    cout<<R.name<<"'s hp after act = "<<R.hp<<endl<<endl;
     this->updateMessage(mConfig);
-    cout<<rConfig[0]<<endl;
     R.updateMessage(rConfig);
-    cout<<R.hp<<endl;
 }
 
-void charactor::updateMessage(vector<int> newMessage) {//0.hp 1.ap 2.armor 3.wisdom 4.strength
+void charactor::updateMessage(vector<int>& newMessage) {//0.hp 1.ap 2.armor 3.wisdom 4.strength
     this->hp = newMessage[0];
     this->ap = newMessage[1];
     this->armor = newMessage[2];

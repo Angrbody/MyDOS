@@ -38,22 +38,22 @@ public:
     void islevelUp();
 
     //添加队友(上限为4)
-    void addFriend(charactor R);
+    void addFriend(charactor& R);
 
     //show your team
     void showTeam();
 
     //1v1 battle
-    void setBattle(charactor R);
+    void setBattle(charactor& R);
 
     //battle act
-    void battleAct(charactor R);    
+    void battleAct(charactor& R);    
 
     //get battle message
     vector<int> getBattleMessage();
 
     //update message
-    void updateMessage(vector<int> newMessage);//0.hp 1.ap 2.armor 3.wisdom 4.strength
+    void updateMessage(vector<int>& newMessage);//0.hp 1.ap 2.armor 3.wisdom 4.strength
     
 private:
     const int levelMax = 18;    //最大等级固定18
