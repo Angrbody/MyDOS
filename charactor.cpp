@@ -161,3 +161,12 @@ void charactor::updateMessage(vector<int>& newMessage) {//0.hp 1.ap 2.armor 3.wi
     this->wisdom = newMessage[3];
     this->strength = newMessage[4];
 }
+
+// void charactor::showMyMaterial(){   //这里后面要完善material类，包括 operator<< 重载
+//     for(int i = 0; i<mymateriel.size(); i++){
+//         for(int j = 0; j<mymateriel[0].size(); j++){
+//             // cout<<mymateriel[i][j]<<" ";
+//         }
+//         cout<<endl;
+//     }
+// }

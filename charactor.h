@@ -10,26 +10,35 @@ using namespace std;
 //人物类：后续应该会作为主角的继承
 class charactor{
 public:
+    //构造函数
     charactor(int m_id, int m_ap, int m_hp, int m_level, string m_name)
-        : id(m_id), ap(m_ap), hp(m_hp), level(m_level), name(m_name)
+        : id(m_id), 
+        ap(m_ap), 
+        hp(m_hp), 
+        level(m_level), 
+        name(m_name),
+        exp(0)  //经验归零
     {
         expPool.resize(levelMax, 100);  //目前先将每一个等级的经验上线都设置为100
-        isfriend.resize(100);   //最多设置100个npc
-        exp = 0;                //经验归零
+        isfriend.resize(100);   //最多设置100个npc            
         //装备栏设置为 10×10
-        mymateriel.resize(10);
-        for(int i = 0; i<mymateriel.size(); i++){
-            mymateriel[i].resize(10);
-        }
+        // mymateriel.resize(10);
+        // for(int i = 0; i<mymateriel.size(); i++){
+        //     mymateriel[i].resize(10);
+        // }
     }
-    //由id获得charator类
-    charactor& getCharactor(){return *this;}
+    ~charactor(){}; //析构函数
+    
+    charactor& getCharactor(){return *this;}    //由id获得charator类，好像没什么用
     
     //获得id,ap,hp,name
     int getID() const {return id;}
     int getAp() const {return ap;}
     int getHp() const {return hp;}
     string getName() const {return name;}
+
+    //show my material
+    void showMyMaterial();
 
     //show message
     void showMessage();
@@ -62,14 +71,14 @@ private:
     int ap;  //行动点数
     int hp;  //生命
     int exp; //经验
-    enum blood{human, elf, skull, dwarf};   //种族
+    enum blood{human = 1, elf = 2, skull = 3, dwarf = 4};   //种族
     vector<int> expPool; //经验池，存放各个等级的最大经验值
     int level;   //等级
     vector<skill> myskill;  //技能列表，动态增加的
     vector<charactor> myfriend; //队友列表
     vector<task> mytask;    //任务列表
     vector<int> isfriend;   //敌对关系列表，负数代表敌对，100以上代表队友
-    vector<vector<materiel>> mymateriel;   //装备（包含武器）
+    // vector<vector<materiel>> mymateriel;   //装备（包含武器）
     //初始属性
     int armor = 0; //护甲值
     int wisdom = 10; //智慧

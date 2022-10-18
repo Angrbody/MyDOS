@@ -33,6 +33,12 @@ int main(){
     Phein.setBattle(expBabyA);
 
     Phein.showMessage();
+    
+    //装备测试
+    // weapon scissor();
+    // armor dirtyCloth();
+
+
     system("pause");
     return 0;
 
