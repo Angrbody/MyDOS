@@ -28,26 +28,24 @@ private:
 //武器类（继承materiel）
 class weapon : public materiel{
 public:
-    // weapon(int m_attackDistance, int m_attack)
-    // :   attackDistance(m_attackDistance),
-    //     attck(m_attack),
-    //     type(1)   
-    // {}
+    weapon(int m_attackDistance, int m_attack) : 
+        materiel(m_user_id, m_type),
+        attackDistance(m_attackDistance),
+        attck(m_attack),  
+    {}
 private:
     int attackDistance; //攻击距离
     int attck;          //攻击力
-    const int type;     //种类
 };
 
 //护甲类（继承materiel）
 class armor : public materiel{
 public:
-    // armor(int m_armor)
-    // :   myarmor(m_armor),
-    //     type(2)
-    // {}
+    armor(int m_armor) : 
+        materiel(m_user_id, m_type),
+        myarmor(m_armor),
+    {}
 private:
     int myarmor;         //护甲值
-    const int type;      //种类
 };
 #endif

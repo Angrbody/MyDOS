@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include"charactor.h"
+#include"materiel.h"
 
 int main(){
     //主角团初始化
@@ -35,8 +36,8 @@ int main(){
     Phein.showMessage();
     
     //装备测试
-    // weapon scissor();
-    // armor dirtyCloth();
+    weapon scissor(1,10);
+    armor dirtyCloth(10); 
 
 
     system("pause");
