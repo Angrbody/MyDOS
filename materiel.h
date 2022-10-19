@@ -13,6 +13,7 @@ public:
     {}
     //析构
     ~materiel(){}
+
     //交换装备
     void swapMateriel (materiel targetM){
         int temp_id = this->user_id;
@@ -20,16 +21,19 @@ public:
         targetM.user_id = temp_id;
     };
 
+    //展示装备
+    void show();
+
 protected:
     int user_id;    //拥有者的id
-    const int type;       //装备种类: 1:weapon, 2:armor
+    int type;       //装备种类: 1:weapon, 2:armor
 };
 
 //武器类（继承materiel）
 class weapon : public materiel{
 public:
-    weapon(int m_attackDistance, int m_attack) : 
-        materiel(user_id, type),
+    weapon(int m_user_id, int m_type, int m_attackDistance, int m_attack) : 
+        materiel(m_user_id, m_type),
         attackDistance(m_attackDistance),
         attck(m_attack)
     {}
@@ -41,8 +45,8 @@ private:
 //护甲类（继承materiel）
 class armor : public materiel{
 public:
-    armor(int m_armor) : 
-        materiel(user_id, type),
+    armor(int m_user_id, int m_type, int m_armor) : 
+        materiel(m_user_id, m_type),
         myarmor(m_armor)
     {}
 private:

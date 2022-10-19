@@ -116,7 +116,7 @@ void charactor::battleAct(charactor& R){
     if(myAct == 1){
         cout<<this->name<<" is attacking !"<<endl;
         int this_attack = mConfig[4]*10;
-            if(this_attack > rConfig[2] > 0){
+            if((this_attack > rConfig[2]) && (rConfig[2] > 0)){
                 this_attack -= rConfig[2];
                 rConfig[2] = 0;
             }
@@ -134,7 +134,7 @@ void charactor::battleAct(charactor& R){
         mConfig[2] += 50;  //固定的加盾
     }
 
-    //heal
+    //heal(有点小bug)
     else if(myAct == 3){
         cout<<this->name<<" is trying to heal hisself !"<<endl;
         int this_heal = mConfig[3]*3; //智慧决定的回复
