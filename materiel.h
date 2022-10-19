@@ -20,7 +20,7 @@ public:
         targetM.user_id = temp_id;
     };
 
-private:
+protected:
     int user_id;    //拥有者的id
     const int type;       //装备种类: 1:weapon, 2:armor
 };
@@ -29,9 +29,9 @@ private:
 class weapon : public materiel{
 public:
     weapon(int m_attackDistance, int m_attack) : 
-        materiel(m_user_id, m_type),
+        materiel(user_id, type),
         attackDistance(m_attackDistance),
-        attck(m_attack),  
+        attck(m_attack)
     {}
 private:
     int attackDistance; //攻击距离
@@ -42,8 +42,8 @@ private:
 class armor : public materiel{
 public:
     armor(int m_armor) : 
-        materiel(m_user_id, m_type),
-        myarmor(m_armor),
+        materiel(user_id, type),
+        myarmor(m_armor)
     {}
 private:
     int myarmor;         //护甲值
