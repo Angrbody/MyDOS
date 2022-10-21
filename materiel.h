@@ -3,13 +3,16 @@
 #include<iostream>
 #include<vector>
 #include"charactor.h"
+#include<string>
+using namespace std;
 //装备类
 class materiel{
 public:
     //构造函数
-    materiel(int m_user_id, int m_type)
+    materiel(int m_user_id, int m_type, string m_name)
     :   user_id(m_user_id),
-        type(m_type)
+        type(m_type),
+        name(m_name)
     {}
     //析构
     ~materiel(){}
@@ -27,28 +30,33 @@ public:
 protected:
     int user_id;    //拥有者的id
     int type;       //装备种类: 1:weapon, 2:armor
+    string name;    //装备名称
 };
 
 //武器类（继承materiel）
 class weapon : public materiel{
 public:
-    weapon(int m_user_id, int m_type, int m_attackDistance, int m_attack) : 
-        materiel(m_user_id, m_type),
+    weapon(int m_user_id, int m_type, string m_name, int m_attackDistance, int m_attack) : 
+        materiel(m_user_id, m_type, m_name),
         attackDistance(m_attackDistance),
-        attck(m_attack)
+        attack(m_attack)
     {}
+    //展示weapon信息
+    void Wshow();
 private:
     int attackDistance; //攻击距离
-    int attck;          //攻击力
+    int attack;          //攻击力
 };
 
 //护甲类（继承materiel）
 class armor : public materiel{
 public:
-    armor(int m_user_id, int m_type, int m_armor) : 
-        materiel(m_user_id, m_type),
+    armor(int m_user_id, int m_type, string m_name, int m_armor) : 
+        materiel(m_user_id, m_type, m_name),
         myarmor(m_armor)
     {}
+    //展示armor信息
+    void Ashow();
 private:
     int myarmor;         //护甲值
 };

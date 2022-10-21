@@ -36,10 +36,10 @@ int main(){
     Phein.showMessage();
     
     //装备测试
-    weapon scissor(1,1,1,10);
-    armor dirtyCloth(1,2,10); 
-    scissor.show();
-    dirtyCloth.show();
+    weapon scissor(1,1, "scissor", 1,10);
+    armor dirtyCloth(1,2,"dirty cloth",10); 
+    scissor.Wshow();
+    dirtyCloth.Ashow();
 
     system("pause");
     return 0;
