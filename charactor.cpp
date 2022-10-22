@@ -23,6 +23,7 @@ void charactor::islevelUp (){
             cout<<"the next level need "<<this->expPool[this->level]<<" exp to reach "<<endl;
             //其他维度增长,暂时随便设置一下（后续应该修改为可选择加两点）
             hp += 100;
+            maxHp = hp;
         }
         else{
             cout<<name<<",you are too weak"<<endl<<endl;
@@ -80,13 +81,13 @@ void charactor::setBattle(charactor& R){
 
     if(this->hp <= 0){
         cout<<"you lose the game !"<<endl;
-        R.updateMessage(rConfig);
+        R.updateMessage(rConfig);   //为敌人恢复状态到战斗之前
     }
     if(R.hp <= 0){
         cout<<"winner is you !"<<endl;
         this->updateMessage(mConfig);   //状态恢复到战斗之前
         this->exp += 100;   //随便设置一个值作为获胜的奖励
-        this->islevelUp();
+        this->islevelUp();  //判断是否能升级
     }
     cout<<endl<<"----------------------BATTLE END !------------------------"<<endl;
 
@@ -100,14 +101,15 @@ std::vector<int> charactor::getBattleMessage() {
     res.push_back(armor);
     res.push_back(wisdom);
     res.push_back(strength);
+    res.push_back(maxHp);
     //后续再补充
     return res;
 }
 
 //封装每个角色的单次操作
 void charactor::battleAct(charactor& R){
-    vector<int> mConfig = this->getBattleMessage(); //0.hp 1.ap 2.armor 3.wisdom 4.strength
-    vector<int> rConfig = R.getBattleMessage();//0.hp 1.ap 2.armor 3.wisdom 4.strength
+    vector<int> mConfig = this->getBattleMessage(); //0.hp 1.ap 2.armor 3.wisdom 4.strength 5.maxHp
+    vector<int> rConfig = R.getBattleMessage();//0.hp 1.ap 2.armor 3.wisdom 4.strength  5.maxHp
     int myAct;
     cout<<this->name<<" 's turn :"<<endl;
     cout<<"please choose your act mode, 1 for attack, 2 for defense, 3 for heal, else for nothing."<<endl;
@@ -136,13 +138,13 @@ void charactor::battleAct(charactor& R){
 
     //heal(有点小bug)
     else if(myAct == 3){
-        cout<<this->name<<" is trying to heal hisself !"<<endl;
+        cout<<this->name<<" is trying to heal himself !"<<endl;
         int this_heal = mConfig[3]*3; //智慧决定的回复
-        if(mConfig[0] + this_heal <= this->hp){
+        if(mConfig[0] + this_heal <= mConfig[5]){
             mConfig[0] += this_heal;
         }
         else{
-            mConfig[0] = this->hp;
+            mConfig[0] = mConfig[5];
         }
     }
     (*this).hp = mConfig[0];

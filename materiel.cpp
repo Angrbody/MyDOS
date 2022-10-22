@@ -12,12 +12,14 @@ void materiel::show(){
     //若想让每个子类以不同的方式复用基类中的方法该怎么实现？
 }
 
+//show weapon message
 void weapon::Wshow(){
     this->show();
     std::cout<< "attack distance: " <<this->attackDistance<<std::endl;
     std::cout<< "attack: " <<this->attack<<std::endl<<std::endl;
 }
 
+//show Armor message
 void armor::Ashow(){
     this->show();
     std::cout<< "additional armor: " <<this->myarmor<<std::endl;

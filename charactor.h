@@ -23,7 +23,8 @@ public:
         strength(10)    //力量
     {
         expPool.resize(levelMax, 100);  //目前先将每一个等级的经验上线都设置为100
-        isfriend.resize(100);   //最多设置100个npc            
+        isfriend.resize(100);   //最多设置100个npc
+        maxHp = hp;            
         //装备栏设置为 10×10
         // mymateriel.resize(10);
         // for(int i = 0; i<mymateriel.size(); i++){
@@ -75,6 +76,7 @@ private:
     int level;   //等级
     string name;    //人物名称
     int exp; //经验
+    int maxHp;  //当前等级的最大生命值
     // enum blood{human = 1, elf = 2, skull = 3, dwarf = 4};   //种族
     vector<int> expPool; //经验池，存放各个等级的最大经验值
     vector<skill> myskill;  //技能列表，动态增加的
@@ -84,6 +86,7 @@ private:
     // vector<vector<materiel>> mymateriel;   //装备（包含武器）
     //初始属性
     int armor;      //护甲值
+    int maxArmor;   //当前等级的最大护甲值
     int wisdom;     //智慧
     int strength;   //力量
 };
