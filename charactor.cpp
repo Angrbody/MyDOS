@@ -172,3 +172,22 @@ void charactor::updateMessage(vector<int>& newMessage) {//0.hp 1.ap 2.armor 3.wi
 //         cout<<endl;
 //     }
 // }
+
+//getMateriel
+void charactor::getMateriel(materiel& m){
+    if(mymateriel.size()<10){
+        m.updateMessage(this->id);
+        this->mymateriel.push_back(m);
+    }
+    else{
+        std::cout<<"plz throw one materiel first!"<<std::endl;
+    }
+}
+
+//wear materiel(需要考虑考虑基类和子类之间的转换)
+void charactor::wearMateriel(materiel& m){
+    if(m.getID() == this->id){
+        if(m.getType() == 1){}
+        else if(m.getType() == 2){}
+    }
+}

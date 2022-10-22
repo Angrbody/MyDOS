@@ -7,6 +7,8 @@
 #include"materiel.h"
 using namespace std;
 
+class materiel;
+
 //人物类：后续应该会作为主角的继承
 class charactor{
 public:
@@ -25,11 +27,8 @@ public:
         expPool.resize(levelMax, 100);  //目前先将每一个等级的经验上线都设置为100
         isfriend.resize(100);   //最多设置100个npc
         maxHp = hp;            
-        //装备栏设置为 10×10
-        // mymateriel.resize(10);
-        // for(int i = 0; i<mymateriel.size(); i++){
-        //     mymateriel[i].resize(10);
-        // }
+        //装备栏先设置10个吧
+        mymateriel.resize(10);
     }
     ~charactor(){}; //析构函数
     
@@ -67,6 +66,12 @@ public:
 
     //update message
     void updateMessage(vector<int>& newMessage);//0.hp 1.ap 2.armor 3.wisdom 4.strength
+
+    //get materiel
+    void getMateriel(materiel& m);
+
+    //wear materiel
+    void wearMateriel(materiel& m);
     
 private:
     const int levelMax = 18;    //最大等级固定18
@@ -83,7 +88,7 @@ private:
     vector<charactor> myfriend; //队友列表
     vector<task> mytask;    //任务列表
     vector<int> isfriend;   //敌对关系列表，负数代表敌对，100以上代表队友
-    // vector<vector<materiel>> mymateriel;   //装备（包含武器）
+    vector<materiel> mymateriel;   //装备（包含武器）
     //初始属性
     int armor;      //护甲值
     int maxArmor;   //当前等级的最大护甲值

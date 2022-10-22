@@ -2,8 +2,8 @@
 #define __MATERIEL__
 #include<iostream>
 #include<vector>
-#include"charactor.h"
 #include<string>
+#include"charactor.h"
 using namespace std;
 //装备类
 class materiel{
@@ -14,6 +14,10 @@ public:
         type(m_type),
         name(m_name)
     {}
+    //default construction
+    materiel(): user_id(-1), type(-1), name("")
+    {}
+
     //析构
     ~materiel(){}
 
@@ -22,11 +26,19 @@ public:
         int temp_id = this->user_id;
         this->user_id = targetM.user_id;
         targetM.user_id = temp_id;
-    };
+    }
+
+    //更新拥有者id
+    void updateMessage(int id){
+        this->user_id = id;
+    }
 
     //展示装备
     void show();
 
+    //获得id,type
+    const int& getID() const{return this->user_id;}
+    const int& getType() const{return this->type;}
 protected:
     int user_id;    //拥有者的id
     int type;       //装备种类: 1:weapon, 2:armor
