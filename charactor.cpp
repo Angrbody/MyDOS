@@ -186,8 +186,17 @@ void charactor::getMateriel(materiel& m){
 
 //wear materiel(需要考虑考虑基类和子类之间的转换)
 void charactor::wearMateriel(materiel& m){
-    if(m.getID() == this->id){
-        if(m.getType() == 1){}
-        else if(m.getType() == 2){}
+    //判断是否是自己的物品
+    if(m.getID() != this->id){
+        std::cout<<"this materiel isn't belongs to you!"<<std::endl<<std::endl;
+        return;//这里的跳出可能需要更改
+    }
+    //将物品属性附加到人物上
+    if(m.getType() == 1){ //1.weapon：attck附加
+        //这里学一下基类子类互相转换
+    }
+    
+    else if(m.getType() == 2){  //2.armor：armor附加
+
     }
 }
