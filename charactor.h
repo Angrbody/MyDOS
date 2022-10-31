@@ -88,7 +88,7 @@ private:
     vector<charactor> myfriend; //队友列表
     vector<task> mytask;    //任务列表
     vector<int> isfriend;   //敌对关系列表，负数代表敌对，100以上代表队友
-    vector<materiel> mymateriel;   //装备（包含武器）
+    vector<materiel> mymateriel;   //装备（包含武器）   221031：这里是不是应该存放装备base类的指针？
     //初始属性
     int armor;      //护甲值
     int maxArmor;   //当前等级的最大护甲值
