@@ -18,6 +18,12 @@ int main(){
     gaoer* newStu2 = dynamic_cast<gaoer*>(stu2);
     A.update(newStu->getTiyu() + newStu2->getJingsai());
     A.show();
+
+    //测试基类容器存放不同子类：可以存，但是会被隐式转换为base class
+    std::vector<student*> Bclass;
+    Bclass.push_back(newStu);
+    Bclass.push_back(newStu2);
+    
     system("pause");
     return 0;
 }

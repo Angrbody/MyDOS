@@ -31,16 +31,22 @@ int main(){
     
     //开发battle系统(暂时先弄1v1)
     charactor expBabyA(6, 4, 400, 1, "expBabyA");
-    Phein.setBattle(expBabyA);
-
-    Phein.showMessage();
+    // Phein.setBattle(expBabyA);
+    // Phein.showMessage();
     
     //装备测试
     weapon scissor(1,1, "scissor", 1,10);
     armor dirtyCloth(1,2,"dirty cloth",10); 
+    weapon* knife = new weapon(-1,1, "knife", 1,15);
     scissor.Wshow();
     dirtyCloth.Ashow();
-
+    knife->Wshow();
+    Phein.showMessage();
+    
+    Phein.getMateriel(knife);
+    Phein.wearMateriel(knife);
+    Phein.showMessage();
+    
     system("pause");
     return 0;
 

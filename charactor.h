@@ -20,15 +20,15 @@ public:
         level(m_level), 
         name(m_name),
         exp(0),  //经验归零
-        armor(0),     //护甲值
+        myarmor(0),     //护甲值
         wisdom(10),    //智慧
         strength(10)    //力量
     {
         expPool.resize(levelMax, 100);  //目前先将每一个等级的经验上线都设置为100
         isfriend.resize(100);   //最多设置100个npc
         maxHp = hp;            
-        //装备栏先设置10个吧
-        mymateriel.resize(10);
+        //装备栏先设置10个吧（这里不设置装备上限了）
+        mymateriel.resize(0);
     }
     ~charactor(){}; //析构函数
     
@@ -68,10 +68,18 @@ public:
     void updateMessage(vector<int>& newMessage);//0.hp 1.ap 2.armor 3.wisdom 4.strength
 
     //get materiel
-    void getMateriel(materiel& m);
+    void getMateriel(materiel* m);
 
     //wear materiel
-    void wearMateriel(materiel& m);
+    void wearMateriel(materiel* m);
+
+    //update strength,armor
+    void updateStrength(int m_strength){
+        strength = m_strength;
+    }
+    void updateArmor(int m_armor){
+        myarmor = m_armor;
+    }
     
 private:
     const int levelMax = 18;    //最大等级固定18
@@ -88,9 +96,9 @@ private:
     vector<charactor> myfriend; //队友列表
     vector<task> mytask;    //任务列表
     vector<int> isfriend;   //敌对关系列表，负数代表敌对，100以上代表队友
-    vector<materiel> mymateriel;   //装备（包含武器）   221031：这里是不是应该存放装备base类的指针？
+    vector<materiel*> mymateriel;   //装备（包含武器）   221031：这里是不是应该存放装备base类的指针？
     //初始属性
-    int armor;      //护甲值
+    int myarmor;      //护甲值
     int maxArmor;   //当前等级的最大护甲值
     int wisdom;     //智慧
     int strength;   //力量

@@ -19,7 +19,7 @@ public:
     {}
 
     //析构
-    ~materiel(){}
+    virtual ~materiel(){}
 
     //交换装备
     void swapMateriel (materiel targetM){
@@ -36,9 +36,10 @@ public:
     //展示装备
     void show();
 
-    //获得id,type
+    //获得id,type,name
     const int& getID() const{return this->user_id;}
     const int& getType() const{return this->type;}
+    const string& getName() const{return this->name;}
 protected:
     int user_id;    //拥有者的id
     int type;       //装备种类: 1:weapon, 2:armor
@@ -55,6 +56,8 @@ public:
     {}
     //展示weapon信息
     void Wshow();
+
+    int getAttack(){return attack;}
 private:
     int attackDistance; //攻击距离
     int attack;          //攻击力
@@ -69,6 +72,7 @@ public:
     {}
     //展示armor信息
     void Ashow();
+    int getArmor(){return myarmor;}
 private:
     int myarmor;         //护甲值
 };

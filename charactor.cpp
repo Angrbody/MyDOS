@@ -1,5 +1,6 @@
 #include<iostream>
 #include"charactor.h"
+#include"materiel.h"
 using namespace std;
 
 //show basic message
@@ -8,7 +9,8 @@ void charactor::showMessage(){
     cout<<"name: "<<name<<endl;
     cout<<"id: "<<id<<endl;
     cout<<"hp: "<<hp<<endl;
-    cout<<"exp: "<<exp<<endl<<endl;
+    cout<<"exp: "<<exp<<endl;
+    cout<<"strength: "<<strength<<endl<<endl;
 }
 
 //人物升级操作
@@ -98,7 +100,7 @@ std::vector<int> charactor::getBattleMessage() {
     vector<int> res;
     res.push_back(hp);
     res.push_back(ap);
-    res.push_back(armor);
+    res.push_back(myarmor);
     res.push_back(wisdom);
     res.push_back(strength);
     res.push_back(maxHp);
@@ -136,7 +138,7 @@ void charactor::battleAct(charactor& R){
         mConfig[2] += 50;  //固定的加盾
     }
 
-    //heal(有点小bug)
+    //heal(有点小bug,已解决)
     else if(myAct == 3){
         cout<<this->name<<" is trying to heal himself !"<<endl;
         int this_heal = mConfig[3]*3; //智慧决定的回复
@@ -159,7 +161,7 @@ void charactor::battleAct(charactor& R){
 void charactor::updateMessage(vector<int>& newMessage) {//0.hp 1.ap 2.armor 3.wisdom 4.strength
     this->hp = newMessage[0];
     this->ap = newMessage[1];
-    this->armor = newMessage[2];
+    this->myarmor = newMessage[2];
     this->wisdom = newMessage[3];
     this->strength = newMessage[4];
 }
@@ -172,31 +174,44 @@ void charactor::updateMessage(vector<int>& newMessage) {//0.hp 1.ap 2.armor 3.wi
 //         cout<<endl;
 //     }
 // }
+void charactor::showMyMaterial(){
+    if(mymateriel.size() == 0){
+        cout<<"you are not have material at all!"<<endl;
+    }
+    for(int i = 0;i<mymateriel.size();i++){
+        charactor::mymateriel[i]->show();
+    }
+}
 
 //getMateriel
-void charactor::getMateriel(materiel& m){
+void charactor::getMateriel(materiel* m){
     if(mymateriel.size()<10){
-        m.updateMessage(this->id);
+        // m.updateMessage(this->id);
+        m->updateMessage(this->id);
         this->mymateriel.push_back(m);
+        std::cout<<this->getName()<<" got the "<<m->getName()<<std::endl<<std::endl;
     }
     else{
-        std::cout<<"plz throw one materiel first!"<<std::endl;
+        std::cout<<"plz throw one materiel first!"<<std::endl<<std::endl;
     }
 }
 
 //wear materiel(需要考虑考虑基类和子类之间的转换)
-void charactor::wearMateriel(materiel& m){
+void charactor::wearMateriel(materiel* m){
     //判断是否是自己的物品
-    if(m.getID() != this->id){
+    if(m->getID() != this->id){
         std::cout<<"this materiel isn't belongs to you!"<<std::endl<<std::endl;
         return;//这里的跳出可能需要更改
     }
     //将物品属性附加到人物上
-    if(m.getType() == 1){ //1.weapon：attck附加
+    if(m->getType() == 1){ //1.weapon：attck附加
         //这里学一下基类子类互相转换
+        weapon* newW = dynamic_cast<weapon*>(m);
+        this->updateStrength(this->strength + newW->getAttack());
     }
     
-    else if(m.getType() == 2){  //2.armor：armor附加
-
+    if(m->getType() == 2){  //2.armor：armor附加
+        armor* newA = dynamic_cast<armor*>(m);
+        this->updateArmor(this->myarmor + newA->getArmor());
     }
 }

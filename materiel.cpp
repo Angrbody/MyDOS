@@ -22,6 +22,6 @@ void weapon::Wshow(){
 //show Armor message
 void armor::Ashow(){
     this->show();
-    std::cout<< "additional armor: " <<this->myarmor<<std::endl;
+    std::cout<< "additional armor: " <<this->myarmor<<std::endl<<std::endl;
 }
 
