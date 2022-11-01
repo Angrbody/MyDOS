@@ -17,3 +17,8 @@ void student::zuobi(){
     this->update(100);
     cout<<"zuobifenshu : "<<this->score<<endl;
 }
+
+void student::show(){
+    std::cout<<"name: "<<student::name<<std::endl;
+    std::cout<<"score: "<<student::score<<std::endl<<std::endl;
+}
